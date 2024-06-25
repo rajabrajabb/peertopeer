@@ -122,7 +122,27 @@ class ServiceController extends Controller
      */
     public function update(Request $request, Service $service)
     {
-        //
+        $fields = ['type_id', 'name', 'category_id', 'description','location','search_value','service_type','price'];
+        foreach($fields as $field){
+            if($request->has($field)){
+                  $service->{$field} = $request->get($field);
+            }
+        }
+
+        if ($request->has('image')) {
+
+        $imageData = $request->input('image');
+        $fileName = SaveImageHelperClass::saveBase64Image($imageData);
+
+        $service->image = $fileName;
+        }
+
+
+        $service->save();
+
+        $service->load(['user', 'type', 'category']);
+
+        return $service;
     }
 
     /**
