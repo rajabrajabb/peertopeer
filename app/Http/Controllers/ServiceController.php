@@ -17,22 +17,22 @@ class ServiceController extends Controller
     {
         $query = Service::query()->with('type','category','user')->orderBy('search_value','DESC');
 
-        $query->when($request->has('name'),function($q) use ($request){
+        $query->when($request->has('name') && $request->get('name') != "null",function($q) use ($request){
             return $q->where('name', 'like' , '%' . $request->name . '%');
         });
-        $query->when($request->has('type_id'),function($q) use ($request){
+        $query->when($request->has('type_id') && $request->get('type_id') != "null",function($q) use ($request){
             return $q->where('type_id',$request->type_id);
         });
-        $query->when($request->has('category_id'),function($q) use ($request){
+        $query->when($request->has('category_id')&& $request->get('category_id') != "null" ,function($q) use ($request){
             return $q->where('category_id',$request->category_id);
         });
-        $query->when($request->has('location'),function($q) use ($request){
+        $query->when($request->has('location')&& $request->get('location') != "null",function($q) use ($request){
             return $q->where('location',$request->location);
         });
-        $query->when($request->has('price'),function($q) use ($request){
+        $query->when($request->has('price')&& $request->get('price') != "null",function($q) use ($request){
             return $q->where('price',$request->price);
         });
-        $query->when($request->has('service_type'),function($q) use ($request){
+        $query->when($request->has('service_type')&& $request->get('service_type') != "null",function($q) use ($request){
             return $q->where('service_type',$request->service_type);
         });
 

@@ -16,10 +16,10 @@ class UserController extends Controller
     public function register(Request $request){
          try {
             $request->validate([
-                'name' => 'required|string|max:255',
+                'name' => 'required|string',
                 'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:8',
-                'phone' => 'required|regex:/^\+?\d{8,11}$/|numeric'
+                'password' => 'required|string',
+                'phone' => 'required'
             ]);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
@@ -94,7 +94,7 @@ class UserController extends Controller
             }
         }
 
-         if ($request->has('avatar')) {
+         if ($request->has('avatar') && $request->get('avatar') != null) {
 
         $avatarData = $request->input('avatar');
         $fileName = SaveImageHelperClass::saveBase64Image($avatarData);
@@ -126,6 +126,7 @@ class UserController extends Controller
         }])
         ->get()
         ->map(function ($favoriteService) {
+            $favoriteService->service->is_favorite = true;
             return $favoriteService->service;
         });
 
@@ -135,9 +136,15 @@ class UserController extends Controller
       public function userServices(){
         $user = auth()->user();
 
+        $favoritedServiceIds = auth()->user()->favorite_services()->pluck('service_id')->toArray();
+
         $services =  Service::where('user_id',"=",$user->id)
         ->with(['user', 'type', 'category'])
-        ->get();
+        ->get()
+        ->map(function($service) use ($favoritedServiceIds){
+            $service->is_favorite = in_array($service->id, $favoritedServiceIds);
+            return $service;
+        });
 
         return response($services);
     }
