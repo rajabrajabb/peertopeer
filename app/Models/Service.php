@@ -19,7 +19,8 @@ class Service extends Model
         'user_id',
         'search_value',
         'service_type',
-        'price'
+        'price',
+        'image_url'
     ];
 
     public function user(){

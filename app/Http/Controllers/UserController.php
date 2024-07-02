@@ -86,7 +86,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $user = auth()->user();
-        $fields = ['email', 'name', 'phone', 'bio','avatar','fcm_user_id'];
+        $fields = ['email', 'name', 'phone', 'bio','avatar','fcm_user_id','image_url'];
 
         foreach($fields as $field){
             if($request->has($field)){

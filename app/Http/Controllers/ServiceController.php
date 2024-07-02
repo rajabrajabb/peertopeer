@@ -122,7 +122,7 @@ class ServiceController extends Controller
      */
     public function update(Request $request, Service $service)
     {
-        $fields = ['type_id', 'name', 'category_id', 'description','location','search_value','service_type','price'];
+        $fields = ['type_id', 'name', 'category_id', 'description','location','search_value','service_type','price','image_url'];
         foreach($fields as $field){
             if($request->has($field)){
                   $service->{$field} = $request->get($field);
