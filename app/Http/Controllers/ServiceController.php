@@ -95,7 +95,8 @@ class ServiceController extends Controller
         'price'=>request()->get('price'),
         'service_type'=>request()->get('service_type'),
         'location'=>request()->get('location'),
-        'user_id' =>  $user->id
+        'user_id' =>  $user->id,
+        'image_url' => request()->get('image_url')
         ]);
 
         return response($service->load(['user']));
